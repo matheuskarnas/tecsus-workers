@@ -1,0 +1,32 @@
+services:
+  servidor-a:
+    build:
+      context: ./servidor-a
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  servidor-b:
+    build:
+      context: ./servidor-b
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - servidor-a
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
